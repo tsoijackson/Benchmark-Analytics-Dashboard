@@ -7,7 +7,6 @@
 ![](gif2.gif)
 
 ## Technology Stack
----
 * React
 * Node.js
 * MySQL
@@ -47,7 +46,6 @@ Database Config Info
 
 
 ## Web Testing Automation
----
 
 * Selenium Python Install Instructions: https://selenium-python.readthedocs.io/installation.html
 * install selenium package: pip3 install selenium
