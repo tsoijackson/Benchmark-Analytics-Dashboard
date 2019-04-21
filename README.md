@@ -41,7 +41,7 @@ Database Config Info
 * ensure backend is up and running
 * navigate into frontend folder: cd frontend
 * install dependent libraries: npm install
-* run frontend: npm run
+* run frontend: npm start
 * default frontend url: http://localhost:3000/
 
 
