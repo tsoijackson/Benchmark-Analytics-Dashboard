@@ -49,7 +49,7 @@ Database Config Info
 ## Web Testing Automation
 ---
 
-* https://selenium-python.readthedocs.io/installation.html
+* Selenium Python Install Instructions: https://selenium-python.readthedocs.io/installation.html
 * install selenium package: pip3 install selenium
 * download stable chromedriver: https://sites.google.com/a/chromium.org/chromedriver/home
 * open up test.py and edit the path to chromedriver in variable named: PATH_TO_CHROMEDRIVER
