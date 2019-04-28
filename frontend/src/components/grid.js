@@ -3,6 +3,12 @@ import { AgGridReact } from 'ag-grid-react';
 import axios from 'axios';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-balham.css';
+import  moment from 'moment';
+
+
+function dateFormatter(params) {
+    return moment(params.value).format('MM/DD/YYYY hh:mm A');
+}
 
 class Grid extends Component {
 
@@ -15,7 +21,7 @@ class Grid extends Component {
             },
             columnHeaders: [
                 { headerName: "Id", field: "id" }, 
-                { headerName: "Time Created", field: "create_time", filter: false }, 
+                { headerName: "Time Created", field: "create_time", filter: false, valueFormatter: dateFormatter }, 
                 { headerName: "Commit", field: "commit_hash" }, 
                 { headerName: "Branch", field: "branch" },
                 { headerName: "Operating System", field: "os" },
