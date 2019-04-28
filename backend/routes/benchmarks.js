@@ -1,7 +1,7 @@
-const express  = require('express');
+const express = require('express');
 const mysql = require('mysql');
 const settings = require('./../settings.json');
-const router   = express.Router();
+const router = express.Router();
 
 router.get('/', (request, response, next) => {
     const connection = mysql.createConnection(settings.database);
@@ -12,7 +12,7 @@ router.get('/', (request, response, next) => {
 
     connection.query(query, (error, rows, fields) => {
         if (error) {
-          return console.error(error.message);
+            return console.error(error.message);
         }
         else {
             response.send(rows);
