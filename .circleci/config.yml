@@ -6,14 +6,6 @@ orbs:
   # Declare a dependency on the welcome-orb
   welcome: circleci/welcome-orb@0.3.1
 
-# Orchestrate or schedule a set of jobs, see https://circleci.com/docs/2.0/workflows/
-workflows:
-  # Name the workflow "Welcome"
-  Welcome:
-    # Run the welcome/run job in its own container
-    jobs:
-      - welcome/run
-
 jobs:
   build: # runs not using Workflows must have a `build` job as entry point
     working_directory: ~/app # directory where steps will run
