@@ -7,7 +7,7 @@ orbs:
   welcome: circleci/welcome-orb@0.3.1
 
 jobs:
-  build: # runs not using Workflows must have a `build` job as entry point
+  build_backend: # runs not using Workflows must have a `build` job as entry point
     working_directory: ~/app/backend # steps will run in directory app/backend
 
     docker: # run the steps with Docker
@@ -34,14 +34,39 @@ jobs:
           paths:
             - ./backend/node_modules
 
-    working_directory: ~/app/frontend # steps will run in directory app/backend
+  build_frontend: # runs not using Workflows must have a `build` job as entry point
+    working_directory: ~/app/backend # steps will run in directory app/backend
 
     docker: # run the steps with Docker
       - image: circleci/node:9.9 # image as the primary container; this is where all `steps` will run
 
-    steps:
-      - checkout
+    steps: # a collection of executable commands
+      - checkout # special step to check out source code to working directory
 
       - run:
-          name: frontend-npm-update
+          name: backend-npm-update
           command: 'sudo npm install -g npm@latest'
+
+      - restore_cache: # special step to restore the dependency cache
+          name: backend-restore-cache
+          key: dependency-cache-{{ checksum "backend/package.json" }}
+
+      - run:
+          name: backend-npm-install
+          command: npm install
+
+      - save_cache: # special step to save the dependency cache
+          name: backend-save-cache
+          key: dependency-cache-{{ checksum "backend/package.json" }}
+          paths:
+            - ./backend/node_modules
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build_backend
+      - build_frontend
+See the Sample Parallel Workflow config for a full example.
+
+
