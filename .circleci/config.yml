@@ -33,3 +33,12 @@ jobs:
           key: dependency-cache-{{ checksum "backend/package.json" }}
           paths:
             - ./backend/node_modules
+
+    working_directory: ~/app/frontend # steps will run in directory app/backend
+
+    steps:
+      - checkout
+
+      - run:
+          name: frontend-npm-update
+          command: 'sudo npm install -g npm@latest'
