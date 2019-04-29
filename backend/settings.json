@@ -6,5 +6,9 @@
         "user": "root",
         "password": "",
         "database": "performance"
+    },
+    "rateLimit": {
+        "windowMS": 60000,
+        "max": 40
     }
 }

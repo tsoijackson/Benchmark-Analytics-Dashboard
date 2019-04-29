@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import withStyles from "@material-ui/core/styles/withStyles";
 import axios from 'axios';
 import { curveCatmullRom } from 'd3-shape';
-// import "./node_modules/react-vis/dist/style"
 import './../../node_modules/react-vis/dist/style.css';
 import {
     XYPlot,
@@ -13,10 +12,16 @@ import {
     LineSeries
 } from 'react-vis';
 
+import  moment from 'moment';
+import { array } from 'prop-types';
+
+
+function dateFormatter(date) {
+    return moment(date).format('YYYY-MM-DD');
+}
+
 const styles = {
     root: {
-        // backgroundColor: '#191d1e !important',
-        // color: '#de5e5f'
     },
     title: {
         fontWeight: 'bold',
@@ -30,24 +35,48 @@ class PerformanceChart extends Component {
         super(props);
         this.state = {
             branches: null,
-            data: null,
+            data: {},
+            start: null,
+            end: null,
             yAxisTickValues: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
         }
     }
 
-    async componentDidMount() {
+    componentDidMount() {
         axios
             .get("http://localhost:5000/branches")
             .then(response => {
+                // set initial start and end dates
+                let current_start = new Date();
+                let current_end = new Date();
+                current_start.setDate(current_start.getDate() - 3); // past 3 days
+                current_end.setDate(current_end.getDate());
+
                 this.setState({
-                    branches: response.data
+                    branches: response.data,
+                    start: dateFormatter(current_start),
+                    end: dateFormatter(current_end)
                 });
             })
             .then(() => {
                 console.log(this.state.branches);
                 this.state.branches.forEach(branch => {
+                    axios
+                        .get(`http://localhost:5000/benchmarks?start=${this.state.start}&end=${this.state.end}&branch=${branch}`)
+                        .then(response => {
+                            let branch_data = [];
+
+                            response.data.forEach(element => {
+                                branch_data.push({ x:element.cpu, y:element.create_time})
+                            });
+
+                            console.log(response.data, branch_data)
+                        });
                 });
                 this.forceUpdate();
+            })
+            .then(() => {
+                console.log('final state', this.state);
             });
     }
 
