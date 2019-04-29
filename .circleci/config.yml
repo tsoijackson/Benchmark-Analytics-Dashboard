@@ -8,7 +8,7 @@ orbs:
 
 jobs:
   build: # runs not using Workflows must have a `build` job as entry point
-    working_directory: ~/app/backend # directory where steps will run
+    working_directory: ~/app/backend # steps will run in directory app/backend
 
     docker: # run the steps with Docker
       - image: circleci/node:9.9 # image as the primary container; this is where all `steps` will run
@@ -21,6 +21,7 @@ jobs:
           command: 'sudo npm install -g npm@latest'
 
       - restore_cache: # special step to restore the dependency cache
+          name: backend-restore-cache
           key: dependency-cache-{{ checksum "backend/package.json" }}
 
       - run:
@@ -28,6 +29,7 @@ jobs:
           command: npm install
 
       - save_cache: # special step to save the dependency cache
+          name: backend-save-cache
           key: dependency-cache-{{ checksum "backend/package.json" }}
           paths:
-            - ./node_modules
+            - ./backend/node_modules
