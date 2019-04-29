@@ -33,8 +33,6 @@ jobs:
           key: dependency-cache-{{ checksum "backend/package.json" }}
           paths:
             - ./backend/node_modules
-  
-  build: # runs not using Workflows must have a `build` job as entry point
 
     working_directory: ~/app/frontend # steps will run in directory app/backend
 
