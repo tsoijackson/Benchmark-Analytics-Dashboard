@@ -18,7 +18,7 @@ jobs:
 
       - run:
           name: backend-npm-update
-          command: 'sudo npm install -g npm@latest'
+          # command: 'sudo npm install -g npm@latest'
 
       - restore_cache: # special step to restore the dependency cache
           name: backend-restore-cache
@@ -33,6 +33,7 @@ jobs:
           key: dependency-cache-{{ checksum "backend/package.json" }}
           paths:
             - ./backend/node_modules
+
 
   build_frontend: # runs not using Workflows must have a `build` job as entry point
     working_directory: ~/app/frontend # steps will run in directory app/backend
