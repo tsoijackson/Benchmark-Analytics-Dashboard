@@ -67,6 +67,3 @@ workflows:
     jobs:
       - build_backend
       - build_frontend
-See the Sample Parallel Workflow config for a full example.
-
-
