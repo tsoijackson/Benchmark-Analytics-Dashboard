@@ -56,7 +56,8 @@ class Grid extends Component {
                 className="ag-theme-balham"
                 style={{
                     flexGrow: 1,
-                    width: '100%'
+                    width: '100%',
+                    height: '90vh'
                 }}
             >
                 <AgGridReact

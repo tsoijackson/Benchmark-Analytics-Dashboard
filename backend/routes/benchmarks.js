@@ -5,10 +5,29 @@ const router = express.Router();
 
 router.get('/', (request, response, next) => {
     const connection = mysql.createConnection(settings.database);
+    let query;
 
-    let query = `SELECT benchmark.id as id, branch.name as branch, os.name as os, create_time, commit_hash, cpu, mem, note
-                 FROM benchmark, branch, os
-                 WHERE benchmark.branch_id = branch.id and benchmark.os_id = os.id`;
+    // get benchmarks from start to end date ranges
+    if (request.query.start && request.query.end) {
+        query = `SELECT benchmark.id as id, branch.name as branch, os.name as os, create_time, commit_hash, cpu, mem, note
+        FROM benchmark, branch, os
+        WHERE benchmark.branch_id = branch.id and benchmark.os_id = os.id
+        AND create_time BETWEEN '${request.query.start}' AND '${request.query.end}'`;
+    }
+
+    // get benchmarks from start to present
+    else if (request.query.start) {
+        query = `SELECT benchmark.id as id, branch.name as branch, os.name as os, create_time, commit_hash, cpu, mem, note
+        FROM benchmark, branch, os
+        WHERE benchmark.branch_id = branch.id and benchmark.os_id = os.id
+        AND create_time BETWEEN '${request.query.start}' AND CURRENT_DATE()`;
+    }
+    // get all benchmarks
+    else {
+        query = `SELECT benchmark.id as id, branch.name as branch, os.name as os, create_time, commit_hash, cpu, mem, note
+        FROM benchmark, branch, os
+        WHERE benchmark.branch_id = branch.id and benchmark.os_id = os.id`;
+    }
 
     connection.query(query, (error, rows, fields) => {
         if (error) {

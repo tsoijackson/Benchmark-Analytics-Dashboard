@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Navbar from './../components/navbar.js';
 import Grid from './../components/grid.js';
+import PerformanceChart from "./../components/performanceChart.js";
 
 class Home extends Component {
     constructor(props) {
@@ -21,6 +22,9 @@ class Home extends Component {
             >
                 <Navbar/>
                 <Grid/>
+                <PerformanceChart
+                    metric='cpu'
+                />
             </div>
         )
     }
