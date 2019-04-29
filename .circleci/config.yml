@@ -35,7 +35,7 @@ jobs:
             - ./backend/node_modules
 
   build_frontend: # runs not using Workflows must have a `build` job as entry point
-    working_directory: ~/app/backend # steps will run in directory app/backend
+    working_directory: ~/app/frontend # steps will run in directory app/backend
 
     docker: # run the steps with Docker
       - image: circleci/node:9.9 # image as the primary container; this is where all `steps` will run
@@ -44,22 +44,22 @@ jobs:
       - checkout # special step to check out source code to working directory
 
       - run:
-          name: backend-npm-update
+          name: frontend-npm-update
           command: 'sudo npm install -g npm@latest'
 
       - restore_cache: # special step to restore the dependency cache
-          name: backend-restore-cache
-          key: dependency-cache-{{ checksum "backend/package.json" }}
+          name: frontend-restore-cache
+          key: dependency-cache-{{ checksum "frontend/package.json" }}
 
       - run:
-          name: backend-npm-install
+          name: frontend-npm-install
           command: npm install
 
       - save_cache: # special step to save the dependency cache
-          name: backend-save-cache
-          key: dependency-cache-{{ checksum "backend/package.json" }}
+          name: frontend-save-cache
+          key: dependency-cache-{{ checksum "frontend/package.json" }}
           paths:
-            - ./backend/node_modules
+            - ./frontend/node_modules
 
 workflows:
   version: 2
