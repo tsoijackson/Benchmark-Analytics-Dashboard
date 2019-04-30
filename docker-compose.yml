@@ -1,8 +1,30 @@
 version: "3"
 services:
-  web:
-    build: .
+
+  database:
+    # image: mysql
+    build: ./database
+    restart: always
+    environment:
+      MYSQL_DATABASE: "performance"
+      # So you don't have to use root, but you can if you like
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_USER: "root"
+      # Password for root access
+      MYSQL_ROOT_PASSWORD: ""
     ports:
-      - "8000:5000"
-    volumes:
-      - .:/app
+      - '3308:3306'
+
+  backend:
+    build: ./backend
+    command: npm start
+    ports:
+      - "5000:5000"
+    depends_on:
+      - database
+  
+  # frontend:
+  #   build: ./frontend
+  #   command: npm start
+  #   ports:
+  #     - "3000:3000"

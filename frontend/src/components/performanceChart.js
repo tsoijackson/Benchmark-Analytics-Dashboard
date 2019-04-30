@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import withStyles from "@material-ui/core/styles/withStyles";
 import axios from 'axios';
-import { curveCatmullRom } from 'd3-shape';
 import './../../node_modules/react-vis/dist/style.css';
 import {
     XYPlot,
@@ -19,8 +18,6 @@ function dateFormatter(date) {
 }
 
 const styles = {
-    root: {
-    },
     title: {
         fontWeight: 'bold',
         fontSize: '35px'
@@ -58,6 +55,7 @@ class PerformanceChart extends Component {
             })
             .then(() => {
                 let data = Object.assign({}, this.state.data); // creating copy of object
+
                 this.state.branches.forEach(branch => {
                     axios
                         .get(`http://localhost:5000/benchmarks?start=${this.state.start}&end=${this.state.end}&branch=${branch}`)
@@ -81,8 +79,6 @@ class PerformanceChart extends Component {
 
         if (this.state.branches !== null) {
             this.state.branches.forEach(branch => {
-                console.log(JSON.stringify(this.state.data))
-                console.log(branch, this.state.data[branch])
                 lines.push(
                     <LineSeries
                         className="first-series"
