@@ -18,7 +18,7 @@ jobs:
 
       - run:
           name: backend-npm-update
-          # command: 'sudo npm install -g npm@latest'
+          command: 'sudo npm install -g npm@latest'
 
       - restore_cache: # special step to restore the dependency cache
           name: backend-restore-cache

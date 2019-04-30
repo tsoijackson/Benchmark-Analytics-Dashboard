@@ -13,8 +13,6 @@ import {
 } from 'react-vis';
 
 import  moment from 'moment';
-import { array } from 'prop-types';
-
 
 function dateFormatter(date) {
     return moment(date).format('YYYY-MM-DD');
@@ -42,7 +40,7 @@ class PerformanceChart extends Component {
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         axios
             .get("http://localhost:5000/branches")
             .then(response => {
@@ -59,7 +57,7 @@ class PerformanceChart extends Component {
                 });
             })
             .then(() => {
-                console.log(this.state.branches);
+                let data = Object.assign({}, this.state.data); // creating copy of object
                 this.state.branches.forEach(branch => {
                     axios
                         .get(`http://localhost:5000/benchmarks?start=${this.state.start}&end=${this.state.end}&branch=${branch}`)
@@ -67,17 +65,14 @@ class PerformanceChart extends Component {
                             let branch_data = [];
 
                             response.data.forEach(element => {
-                                branch_data.push({ x:element.cpu, y:element.create_time})
+                                branch_data.push({ x:new Date(element.create_time), y:element[this.props.metric]})
                             });
 
-                            console.log(response.data, branch_data)
+                            data[branch] = branch_data;                       // updating value
+                            this.setState({data});                            // update state4
                         });
-                });
-                this.forceUpdate();
+                })
             })
-            .then(() => {
-                console.log('final state', this.state);
-            });
     }
 
     render() {
@@ -86,10 +81,12 @@ class PerformanceChart extends Component {
 
         if (this.state.branches !== null) {
             this.state.branches.forEach(branch => {
+                console.log(JSON.stringify(this.state.data))
+                console.log(branch, this.state.data[branch])
                 lines.push(
                     <LineSeries
                         className="first-series"
-                        data={[{ x: 1, y: 3 }, { x: 2, y: 5 }, { x: 3, y: 15 }, { x: 4, y: 12 }]}
+                        data={this.state.data[branch]}
                         style={{
                             strokeLinejoin: 'round',
                             strokeWidth: 4

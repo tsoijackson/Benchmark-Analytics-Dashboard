@@ -13,7 +13,8 @@ router.get('/', (request, response, next) => {
         query = `SELECT benchmark.id as id, branch.name as branch, os.name as os, create_time, commit_hash, cpu, mem, note
         FROM benchmark, branch, os
         WHERE benchmark.branch_id = branch.id and benchmark.os_id = os.id AND branch.name = "${request.query.branch}"
-        AND create_time BETWEEN '${request.query.start}' AND '${request.query.end}'`;
+        AND create_time BETWEEN '${request.query.start}' AND '${request.query.end}'
+        ORDER BY create_time ASC`;
     }
 
     // get benchmarks from start to end date ranges

@@ -13,17 +13,20 @@ class Home extends Component {
 
     render() {
         return (
-            <div 
-            style={{
-                display: 'flex',
-                flexDirection: 'column',
-                height: '100vh'
-            }}
+            <div
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: '100vh'
+                }}
             >
-                <Navbar/>
-                <Grid/>
+                <Navbar />
+                <Grid />
                 <PerformanceChart
                     metric='cpu'
+                />
+                <PerformanceChart
+                    metric='mem'
                 />
             </div>
         )
